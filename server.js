@@ -10,6 +10,7 @@ var port = process.env.PORT || 8080;
 var originBlacklist = parseEnvList(process.env.CORSANYWHERE_BLACKLIST);
 var originWhitelist = parseEnvList(process.env.CORSANYWHERE_WHITELIST);
 var requireHeader = parseEnvList(process.env.CORSANYWHERE_REQUIRE_HEADER);
+var removeHeader = parseEnvList(process.env.CORSANYWHERE_REMOVE_HEADER);
 function parseEnvList(env) {
   if (!env) {
     return [];
@@ -39,7 +40,7 @@ cors_proxy.createServer({
     // 'x-forwarded-for',
     // 'x-forwarded-proto',
     // 'x-forwarded-port',
-  ],
+  ].concat(removeHeader || []),
   redirectSameOrigin: true,
   httpProxyOptions: {
     // Do not add X-Forwarded-For, etc. headers, because Heroku already adds it.
